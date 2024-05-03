@@ -1,0 +1,151 @@
+﻿@{
+    Layout = null;
+    //ViewData["Title"] = "Login Page";
+}
+@model Job.Abstraction.ViewDataModels.LoginDetails
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Job | Applicant Login</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="~/img/favicon.png" rel="icon">
+    <link href="~/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+    <link href="~/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/css/sweet-alert.css" rel="stylesheet" />
+
+
+
+
+    <!-- Template Main CSS File -->
+    <link href="~/css/custom-animate.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+</head>
+<body>
+    @*<form id="form1" runat="server">*@
+    <header id="header" class="header fixed-top">
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+            
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="getstarted scrollto px-5 btn-secondary2 text-uppercase" asp-controller="Home" asp-action="Index">Home</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav>
+        </div>
+
+    </header>
+    <main id="main">
+        <section class="mh100vh pt-5 position-relative" style="background: url(~/img/hero-bg.png); background-position: center; background-size: cover; position: relative;">
+            @* <%--<section class="mh100vh mt110px shadow position-relative" style="background: url(~/img/hero-bg.png); background-position: center; background-size: cover; position: relative;">--%>*@
+            <!-- <section class="mh20vh mt110px shadow" style="background: url(~/img/hero-bg.png);background-position: center;background-size: cover;position: relative;"> -->
+            <br /><br /><br /><br /><br />
+            <img src="~/img/we-fly-badge3.png" alt="" class="we-fly__badge right  mt-4" style="right: 1%; top: 1%; opacity: 0.6;">
+            <div class="container">
+                <div class="row justify-content-center gy-4 ">
+                    <div class="col-md-4">
+                        <div class="shadow rounded-4 p-3 p-sm-4 text-start bg-white" style="border: solid #febf89">
+                            <!-- <p class="mb-4 p-0 text-center">Login</p> -->
+                            <p class="mb-4 p-0 lead text-center fw-normal text-secondary2">Login <i class="bi bi-box-arrow-in-right"></i></p>
+                            <form asp-action="Login" asp-controller="Account" method="post">
+                                <hr>
+                                <div class="w-100 mb-3">
+                                    <label asp-for="EmailId" class="mb-1"><i class="bi bi-person-circle"></i>Uername<span class="text-danger">*</span></label>
+                                    <input asp-for="EmailId" type="email" class="form-control" placeholder="">
+                                    <span asp-validation-for="EmailId" class="text-danger"></span>
+                                </div>
+
+                                <div class="w-100 mb-3 float-start">
+                                    <label asp-for="Password" class="mb-1"><i class="bi bi-person-lock"></i>Password<span class="text-danger">*</span></label>
+                                    <div class="input-group ">
+                                        <input asp-for="Password" type="password" id="txtPassword" class="form-control" placeholder="">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span id="togglePassword" class="bi bi-eye-fill"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                               @* <div class="w-100 mb-0 float-start">
+                                    <label class="w-100  mb-1"><i class="bi bi-shield-lock"></i>Captcha<span class="text-danger">*</span></label>
+
+                                    <label asp-for="Captcha" class="w-50 mb-1"> @ViewBag.lblCaptcha </label>
+                                    <input asp-for="Captcha" type="text" class="w-50  form-control float-end" placeholder="">
+
+                                </div>*@
+                                @*<span asp-validation-for="Captcha" class="text-danger"></span>*@
+                                <div class="w-100 my-3 text-center">
+                                    <button asp-action="Login" asp-controller="Account" type="submit" class="w-100  btn btn-primary2 mt-3 px-5"><i class="bi bi-check-circle"></i>Login</button>
+
+                                </div>
+                            </form>
+                            @*<div class="w-100 mb-1">
+                                <a asp-controller="Account" asp-action="ForgetPassword" class="float-end"><i class="bi bi-exclamation-triangle-fill"></i>Forgot Password..?</a>
+                                <a asp-controller="Account" asp-action="Registration"><i class="bi bi-person-fill-add"></i>New User..? <b>Register</b></a>
+                            </div>*@
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+
+
+    </main>
+    @*</form>*@
+
+    <!-- Vendor JS Files -->
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="~/js/sweet-alert.min.js"></script>
+    <!-- Template Main JS File -->
+    <script src="~/js/main.js"></script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script>
+        $(document).ready(function () {
+            HideShowPassword("togglePassword", "txtPassword");
+        })
+
+        $(window).on('load', function () {
+            //var val = $('#hdnerrorstatus').val();
+            //if (val != "") {
+            //    if (val == 0) {
+            //        $('#exampleModal').modal('show');
+            //    }
+            //}
+            //else {
+            //    $('#exampleModal').modal('hide');
+            //}
+
+            var ErrorStatus = '@ViewBag.ErrorStatus'
+
+            if (ErrorStatus == "1") {
+                //alert('@TempData["ErrorMessage"]');
+                SwalMessage("Validation", '@Html.Raw(TempData["ErrorMessage"])', "warning");
+            }
+
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+﻿@using Job.Abstraction.ViewDataModels
+@using System.Web
+@model DashBoard
+@{
+    ViewData["Title"] = "Job Application Details | JobApplication";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+    var cnt = 1;
+}
+<div class="row justify-content-center">
+    <div class="col-md-12">
+        <form>
+            <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <fieldset>
+                            <legend>Application List</legend>
+                            <div class="row gy-4 custom_form">
+                                <div class="col-lg-3 col-md-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                                    <label><i class="bi bi-calendar"></i>Application From  Date: </label>
+                                    <input class="form-control" asp-for="FromDate" type="date">
+                                </div>
+
+                                <div class="col-lg-3 col-md-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="700">
+                                    <label><i class="bi bi-calendar"></i>Application To  Date: </label>
+                                    <input class="form-control" asp-for="ToDate" type="date">
+                                </div>
+
+                                <div class="col-lg-1 col-md-6 aos-init aos-animate align-self-end" data-aos="fade-up" data-aos-delay="700">
+                                    <button class="btn btn-secondary2" type="submit" asp-controller="JobApplication" asp-action="GetJobApplicationList">Search</button>
+                                </div>
+
+                                <div class="col-12">
+                                    <table class="table table-bordered border-warning table-hover table-sm small" id="tabletoexport">
+                                        <thead>
+                                            <tr style="text-align:center">
+                                                <th scope="col">#</th>
+                                                <th scope="col">Application No</th>
+                                                <th scope="col">Applicant Name</th>
+                                                <th scope="col">Application Date </th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.DashboardDeatilsList)
+                                            {
+
+                                                <tr>
+                                                    <td class="text-center">@cnt</td>
+                                                    <td class="text-center">@item.ApplicationNo</td>
+                                                    <td class="text-center">@item.ApplicantName</td>
+                                                    <td class="text-center">@item.ApplicationDate</td>
+                                                    <td class="text-center">
+                                                        <a asp-controller="JobApplication" asp-action="ViewJobApplication" asp-route-strHangerApplicationId="@item.JobApplicationId.ToString()" class="text-danger" style="display :inline;font-size: 1.55rem;">
+                                                            <i class="bi bi-eye-fill"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                cnt++;
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+
+
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </asp:Content>
+        </form>
+
+
+
+
+    </div>
+</div>
+<script src="~/js/jquery-3.3.1.min.js"></script>
+<script src="~/js/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //debugger;
+        var msg = '@Html.Raw(@TempData["Message"])';
+        if (msg != null && msg != '') {
+            clearTempData();
+            ShowDynamicSwalAlert("", msg);
+        }
+    });
+</script>

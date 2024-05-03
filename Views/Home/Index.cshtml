@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<script src="~/js/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //debugger;
+        var msg = '@Html.Raw(@TempData["Message"])';
+        if (msg != null && msg != '') {
+            clearTempData();
+            ShowDynamicSwalAlert("", msg);
+        }
+    });
+    function clearTempData() {
+        $.ajax({
+            url: '/Home/ClearTempData',
+            type: 'POST',
+            success: function () {
+                //console.log('TempData cleared successfully.');
+            },
+            error: function () {
+                //console.error('Error clearing TempData.');
+            }
+        });
+    }
+</script>

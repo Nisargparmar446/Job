@@ -1,0 +1,581 @@
+﻿@model Job.Abstraction.ViewDataModels.JobApplicationDetails
+@{
+    ViewData["Title"] = "JobApplication Page";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+    var modelEduCnt = 1;
+    var modelWorkCnt = 1;
+    if (@Model != null && @Model.objEducationDetails != null)
+    {
+        modelEduCnt = @Model.objEducationDetails.Count();
+    }
+    if (@Model != null && @Model.objWorkExpDetails != null)
+    {
+        modelWorkCnt = @Model.objWorkExpDetails.Count();
+    }
+}
+
+
+<form method="post" asp-controller="JobApplication" asp-action="AddUpdateJobApplicationDetails">
+    <div class="row justify-content-center gy-4">
+        <div class="col-md-10 justify-content-center g-3 shadow rounded-4 p-3 p-sm-4 text-start bg-white" style="border: solid #febf89">
+            <div class="card">
+                <div class="card-header">
+                    Job Application
+                </div>
+                <div class="card-body g-3">
+                    <fieldset class="scheduler-border mb-2">
+                        <legend class="scheduler-border">Basic Details</legend>
+                        <div class="control-group">
+
+                            <div class="row mb-2">
+                                <div class="col-md-8">
+                                    <label class="form-label"><i class="bi bi-building"></i>Name<span class="text-danger">*</span></label>
+                                    <input type="text" asp-for="ApplicantName" class="form-control">
+                                    <span asp-validation-for="ApplicantName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="inputEmail4" class="form-label"><i class="bi bi-r-circle"></i>Email<span class="text-danger">*</span></label>
+                                    <input type="text" asp-for="Email" class="form-control">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-4">
+                                    <label class="form-label"><i class="bi bi-person-circle"></i>Address<span class="text-danger">*</span></label>
+                                    <input type="text" asp-for="Address" class="form-control">
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Gender<span class="text-danger">*</span></label>
+                                    <select asp-for="Gender">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label"><i class="bi bi-person-circle"></i>Contact<span class="text-danger">*</span></label>
+                                    <input type="text" asp-for="Contact" class="form-control">
+                                    <span asp-validation-for="Contact" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="scheduler-border mb-2">
+                        <legend class="scheduler-border">Education Details</legend>
+                        <div class="control-group" id="ChargesPartialId">
+                            <table class="table table-bordered" id="EducationDetails">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th scope="col">Education</th>
+                                        <th scope="col">Board/University</th>
+                                        <th scope="col">Year</th>
+                                        <th scope="col">CGPA/Percentage</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-end">
+                                    <tr>
+                                        @*<td scope="row">@j</td>*@
+                                        <input type="hidden" id="@("hdnIsDeleted")" asp-for="objEducationDetails[0].IsDeleted" value="false"/>
+                                        @*<td><input type="date" asp-for="ObjOperationDetailModel[0].Date" class="form-control"/></td>*@
+                                        <td>
+                                            <select id="ddlEducationTypeId" asp-for="objEducationDetails[0].EducationId" asp-items="@(new SelectList(ViewBag.EducationType, "Value", "Text"))" class="form-select">
+                                                <option value="" selected="selected">--Select Education--</option>
+                                            </select>
+                                            <span id="objEducationDetails_University_error0" class="text-danger"></span>
+                                        </td>
+                                        <td>
+                                            <input type="text" asp-for="objEducationDetails[0].University" class="form-control" />
+                                            <span id="objEducationDetails_University_error0" class="text-danger"></span>
+                                        </td>
+                                        <td>
+                                            <input type="text" asp-for="objEducationDetails[0].PassoutYear" class="form-control" />
+                                            <span id="objEducationDetails_PassoutYear_error0" class="text-danger"></span>
+                                        </td>
+                                        <td>
+                                            <input type="text" asp-for="objEducationDetails[0].Percentage" class="form-control" />
+                                            <span id="objEducationDetails_Percentage_error0" class="text-danger"></span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <span colspan="1" class="text-end">
+                                    <input class="btn btn-primary" id="AddEdubutton" type="button" value="Add" />
+                                </span>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="scheduler-border mb-2">
+                        <legend class="scheduler-border">Work Experience</legend>
+                        <div class="control-group" id="ChargesPartialId">
+                            <table class="table table-bordered" id="WorkExpDetails">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th scope="col">Company</th>
+                                        <th scope="col">Designation</th>
+                                        <th scope="col">From Date</th>
+                                        <th scope="col">To Date</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-end">
+                                    <tr>
+                                        <input type="hidden" id="@("hdnIsDeletedWork")" asp-for="objWorkExpDetails[0].IsDeleted" value="false" />
+                                        @*<td><input type="date" asp-for="ObjOperationDetailModel[0].Date" class="form-control"/></td>*@
+                                        <td>
+                                            <input type="text" asp-for="objWorkExpDetails[0].Company" class="form-control" />
+                                            <span id="objEducationDetails_University_error0" class="text-danger"></span>
+                                        </td>
+                                        <td>
+                                            <input type="text" asp-for="objWorkExpDetails[0].Designation" class="form-control" />
+                                            <span id="objEducationDetails_University_error0" class="text-danger"></span>
+                                        </td>
+                                        <td>
+                                            <input type="date" asp-for="objWorkExpDetails[0].ExpFromDate" class="form-control" />
+                                            <span id="objEducationDetails_PassoutYear_error0" class="text-danger"></span>
+                                        </td>
+                                        <td>
+                                            <input type="date" asp-for="objWorkExpDetails[0].ExpToDate" class="form-control" />
+                                            <span id="objEducationDetails_Percentage_error0" class="text-danger"></span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <span colspan="1" class="text-end">
+                                    <input class="btn btn-primary" id="AddWorkExpbutton" type="button" value="Add" />
+                                </span>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="scheduler-border mb-2">
+                        <legend class="scheduler-border">Preference</legend>
+                        <div class="control-group">
+
+                            <div class="row mb-2">
+                                <div class="col-md-4">
+                                    <label class="form-label">Preferred Location</label>
+                                    <select id="ddlPreferedLocationId" asp-for="PreferredLocation" class="form-select">
+                                        <option value="" selected="selected">--SELECT Location--</option>
+                                        <option value="Ahmedabad">Ahmedabad</option>
+                                        <option value="Vadodara">Vadodara</option>
+                                        <option value="Pune">Pune</option>
+                                        <option value="Banglore">Banglore</option>
+                                    </select>
+                                    <span asp-validation-for="PreferredLocation" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Expected CTC</label>
+                                    <input type="text" asp-for="ExpectedCTC" class="form-control">
+                                    <span asp-validation-for="ExpectedCTC" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-4">
+                                    <label class="form-label">Current CTC</label>
+                                    <input type="text" asp-for="CurrentCTC" class="form-control">
+                                    <span asp-validation-for="CurrentCTC" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Notice Period(In Days)</label>
+                                    <input type="text" asp-for="NoticePeriod" class="form-control">
+                                    <span asp-validation-for="NoticePeriod" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!--<fieldset class="scheduler-border mb-2">
+                        <legend class="scheduler-border">Known Languages</legend>
+                        <div class="control-group" id="ChargesPartialId">
+                            <table class="table table-bordered" id="EducationDetails">
+                                <thead>
+                                    <tr class="text-center">-->
+                    @*<th scope="col">Date</th>*@
+                    <!--<th scope="col"></th>
+                            <th scope="col">Language</th>
+                            <th scope="col">Read</th>
+                            <th scope="col">Write</th>
+                            <th scope="col">Speak</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-end">
+                        <tr>-->
+                    @*<td scope="row">@j</td>*@
+                    <!--<input type="hidden" id="@("hdnIsDeleted")" />-->
+                    @*<td><input type="date" asp-for="ObjOperationDetailModel[0].Date" class="form-control"/></td>*@
+                    <!--<td>
+                                            <div class="control-form col-md-4">
+                                                <input type="checkbox" />
+                                            </div>
+                                            <span id="ObjOperationDetailModel_From_error0" class="text-danger"></span>
+                                        </td>
+                                        <td>
+                                            <label class="form-label" style="display: block; text-align: center;">Hindi</label>
+                                            <span id="ObjOperationDetailModel_To_error0" class="text-danger"></span>
+                                        </td>
+                                        <td>
+                                            <div class="form-group row">
+                                                <div class="control-form col-md-4">
+                                                    <input type="checkbox" id="IsActive">
+                                                </div>
+                                            </div>
+                                            <span id="ObjOperationDetailModel_ETD_error0" class="text-danger"></span>
+                                        </td>
+                                        <td>
+                                            <div class="form-group row">
+                                                <div class="control-form col-md-4">
+                                                    <input type="checkbox" id="IsActive">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-group row">
+                                                <div class="control-form col-md-4">
+                                                    <input type="checkbox" id="IsActive">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <span colspan="1" class="text-end">
+                                    <input class="btn btn-primary" id="Addbutton" type="button" value="Add" />
+                                </span>
+                            </div>
+                        </div>
+                    </fieldset>-->
+                    @*<fieldset class="scheduler-border mb-2">
+                            <legend class="scheduler-border">Request By</legend>
+
+                            @if (Model.userRegistrationDetails != null)
+                            {
+                                <div class="control-group">
+
+                                    <div class="row mb-2">
+                                        <div class="col-md-8">
+                                            <label class="form-label"><i class="bi bi-building"></i>Organization Name<span class="text-danger">*</span></label>
+                                            <input  class="form-control" readonly>
+                                            <span asp-validation-for="OrganizationName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="inputEmail4" class="form-label"><i class="bi bi-r-circle"></i>Organization Registration No<span class="text-danger">*</span></label>
+                                            <input  class="form-control" readonly>
+                                            <span asp-validation-for="OrganizationRegistrationNo" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-4">
+                                            <label class="form-label"><i class="bi bi-person-circle"></i>Correspondent Person Name<span class="text-danger">*</span></label>
+                                            <input  type="text" class="form-control" placeholder="First Name" readonly>
+                                            <span asp-validation-for="CorrespondentPersonName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input  type="text" class="form-control" style="margin-top: 1.7rem!important;" placeholder="Middle Name" readonly>
+                                            @*<span asp-validation-for="CorrespondentPersonMiddleName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input asp-for="@Model.userRegistrationDetails.LastName" type="text" class="form-control" style="margin-top: 1.7rem!important;" placeholder="Surname" readonly>
+                                            <span asp-validation-for="CorrespondentPersonLastName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-sim"></i>Mobile No<span class="text-danger">*</span></label>
+                                            <input asp-for="@Model.userRegistrationDetails.MobileNo" type="text" class="form-control">
+                                            <span asp-validation-for="MobileNo" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-envelope-at"></i>Email<span class="text-danger">*</span></label>
+                                            <input asp-for="@Model.userRegistrationDetails.EmailId" type="email" class="form-control" placeholder="" readonly>
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </fieldset>
+                        <fieldset class="scheduler-border mb-2">
+                            <legend class="scheduler-border">Request Date Time</legend>
+                            <div class="control-group">
+                                <div class="row mb-2 ">
+                                    <div class="col-md-6">
+                                        <label class="form-label"><i class="bi bi-calendar3"></i>From Date & Time<span class="text-danger">*</span></label>
+                                        <input asp-for="ReqFromDateTime" type="text" placeholder="DD/MM/YYYY  HH:MM" class="form-control datetimepicker">
+                                        <span asp-validation-for="ReqFromDateTime" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label"><i class="bi bi-calendar3"></i>To Date & Time<span class="text-danger">*</span></label>
+                                        <input asp-for="ReqToDateTime" type="text" placeholder="DD/MM/YYYY  HH:MM" class="form-control datetimepicker">
+                                        <span asp-validation-for="ReqToDateTime" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-2 ">
+                                    <div class="col-md-6">
+                                        <label class="form-label"><i class="bi bi-geo-alt"></i>Hanger Location<span class="text-danger">*</span></label>
+                                        <select asp-for="HangerLocationId" asp-items="@(new SelectList(@ViewBag.HangerLocationList, "Value", "Text"))" class="form-control">
+                                            <option value="">- Please Select Hanger Location -</option>
+                                        </select>
+                                        <span asp-validation-for="HangerLocationId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="scheduler-border mb-2">
+                            <legend class="scheduler-border">Aircraft Details</legend>
+                            <div class="control-group">
+                                <div class="row mb-2 ">
+                                    <div class="col-md-12">
+                                        <label class="form-label"><i class="bi bi-airplane-engines"></i>Aircraft Type Model<span class="text-danger">*</span></label>
+                                        <input asp-for="AircraftTypeModel" type="text" class="form-control">
+                                        <span asp-validation-for="AircraftTypeModel" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-2 ">
+                                    <div class="col-md-4">
+                                        <label class="form-label"><i class="bi bi-server"></i>Aircraft AUW<span class="text-danger">*</span></label>
+                                        <input asp-for="AircraftAUW" type="number" class="form-control" placeholder="MTOW in Kgs">
+                                        <span asp-validation-for="AircraftAUW" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label class="form-label"><i class="bi bi-file-earmark-arrow-down"></i>Aircraft AUW Copy</label>
+                                        <div class="control-form col-md-4" id="dvAppointCatUpload">
+                                            <input type="file" asp-for="AircraftAUWFile" class="form-control">
+                                            <span asp-validation-for="AircraftAUWFile" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <fieldset class="scheduler-border mb-2">
+                            <legend class="scheduler-border">Approx Charges</legend>
+                            <div class="control-group" id="ChargesPartialId">
+                                @*<table class="table table-bordered">
+                                <thead>
+                                <tr class="text-center">
+                                <th scope="col" style="width:2%">#</th>
+                                <th scope="col">Description of Services</th>
+                                <th scope="col" style="width:5%">Rate</th>
+                                <th scope="col" style="width:5%">Per</th>
+                                <th scope="col" style="width:10%">Amount</th>
+                                </tr>
+                                </thead>*@
+                    @*<tbody class="text-end">*@
+
+                    @*@for (int i = 0; i < Model.ObjChargesModel.Count; i++)
+                        {
+                        <tr>
+                        <td scope="row">@i</td>
+                        <td class="text-start">@Html.DisplayFor(modelItem => modelItem.ObjChargesModel[i].)</td>
+                        <td></td>
+                        <td></td>
+                        <td id="amt@(i)">@Html.DisplayFor(modelItem => modelItem.ObjChargesModel[i].TotalAmount)</td>
+                        </tr>
+                        }*@
+                    @*<tr>
+                        <td scope="row">1</td>
+                        <td class="text-start">Hanger Changes</td>
+                        <td></td>
+                        <td></td>
+                        <td>612.00</td>
+                        </tr>*@
+                    @*<tr>
+                        <td scope="row">3</td>
+                        <td>CGST  9%</td>
+                        <td>9</td>
+                        <td>%</td>
+                        <td id="CGST"></td>
+                        </tr>
+                        <tr>
+                        <td scope="row">4</td>
+                        <td>SGST  9%</td>
+                        <td>9</td>
+                        <td>%</td>
+                        <td id="SGST"></td>
+                        </tr>
+                        <tr class="bg-light fw-bold">
+                        <td> </td>
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td id="totalamount"><i class="bi bi-currency-rupee"></i></td>
+
+                        </tr>
+                        </tbody>*@
+                    @* </table>*@
+                    @*  </div>
+
+                        </fieldset>*@
+
+                </div>
+                <div class="card-footer g-3 text-end">
+                    <button type="submit" class="btn btn-secondary2" id="btnFormSubmit">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<script src="~/js/sweet-alert.min.js"></script>
+<script src="~/js/jquery-3.3.1.min.js"></script>
+<script src="~/js/site.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+    var ttlCount = @modelEduCnt;
+    var removeCount = 0;
+    $("#AddEdubutton").on("click", function () {
+        var flag = false;
+        flag = ValidateControl(ttlCount);
+
+        if (flag) {
+
+            var strHTML = "";
+           strHTML += "<tr id='tr" + ttlCount + "'>";
+        strHTML += "<input type='hidden' id='hdnIsDeleted" + ttlCount + "' name='objEducationDetails[" + ttlCount + "].IsDeleted' value='false'>";
+        strHTML += " <td><input name='objEducationDetails[" + ttlCount + "].EducationId' id='objEducationDetails_" + ttlCount + "_EducationId'  type='text' class='form-control'>";
+        strHTML += "<span id='objEducationDetails_EducationId_error" + ttlCount + "' class='text-danger'></span></td>";
+        strHTML += " <td><input name='objEducationDetails[" + ttlCount + "].University' id='objEducationDetails_" + ttlCount + "_University'  type='text' class='form-control'>";
+        strHTML += "<span id='objEducationDetails_University_error" + ttlCount + "' class='text-danger'></span></td>";
+        strHTML += " <td><input name='objEducationDetails[" + ttlCount + "].PassoutYear' id='objEducationDetails_" + ttlCount + "_PassoutYear'  type='text' class='form-control'>";
+        strHTML += "<span id='objEducationDetails_PassoutYear_error" + ttlCount + "' class='text-danger'></span></td>";
+        strHTML += " <td><input name='objEducationDetails[" + ttlCount + "].Percentage' id='objEducationDetails_" + ttlCount + "_Percentage'  type='text' class='form-control'>";
+        strHTML += "<span id='objEducationDetails_Percentage_error" + ttlCount + "' class='text-danger'></span></td>";
+            strHTML += "<td><input class='btn btn-danger' type='button' value='Remove' onclick='RemoveTextBox(this," + ttlCount + ");'></td>";
+            strHTML += "</tr>";
+
+            ttlCount++;
+        $("#EducationDetails").append(strHTML);
+        }
+        });
+    var ttlWorkCount = @modelWorkCnt;
+    var removeCount = 0;
+    $("#AddWorkExpbutton").on("click", function () {
+        var flag = false;
+        flag = ValidateControlWork(ttlCount);
+        if (flag) {
+            var strHTML = "";
+        strHTML += "<tr id='tr" + ttlWorkCount + "'>";
+        strHTML += "<input type='hidden' id='hdnIsDeletedWork" + ttlWorkCount + "' name='objWorkExpDetails[" + ttlWorkCount + "].IsDeleted' value='false'>";
+        strHTML += " <td><input name='objWorkExpDetails[" + ttlWorkCount + "].Company' id='objWorkExpDetails_" + ttlWorkCount + "_Company'  type='text' class='form-control'>";
+        strHTML += "<span id='objWorkExpDetails_Company_error" + ttlWorkCount + "' class='text-danger'></span></td>";
+        strHTML += " <td><input name='objWorkExpDetails[" + ttlWorkCount + "].Designation' id='objWorkExpDetails_" + ttlWorkCount + "_Designation'  type='text' class='form-control'>";
+        strHTML += "<span id='objWorkExpDetails_Designation_error" + ttlWorkCount + "' class='text-danger'></span></td>";
+        strHTML += " <td><input name='objWorkExpDetails[" + ttlWorkCount + "].ExpFromDate' id='objWorkExpDetails_" + ttlWorkCount + "_ExpFromDate'  type='date' class='form-control'>";
+        strHTML += "<span id='objWorkExpDetails_ExpFromDate_error" + ttlWorkCount + "' class='text-danger'></span></td>";
+        strHTML += " <td><input name='objWorkExpDetails[" + ttlWorkCount + "].ExpToDate' id='objWorkExpDetails_" + ttlWorkCount + "_ExpToDate'  type='date' class='form-control'>";
+        strHTML += "<span id='objWorkExpDetails_ExpToDate_error" + ttlWorkCount + "' class='text-danger'></span></td>";
+        strHTML += "<td><input class='btn btn-danger' type='button' value='Remove' onclick='RemoveTextBoxWork(this," + ttlWorkCount + ");'></td>";
+    strHTML += "</tr>";
+
+        ttlWorkCount++;
+        $("#WorkExpDetails").append(strHTML);
+        }
+    });
+    function RemoveTextBox(button, rowId) {
+
+        $(button).parent().parent().css("display", "none");
+        $("#hdnIsDeleted" + rowId).val(true);
+        removeCount++;
+
+    }
+    function RemoveTextBoxWork(button, rowId) {
+
+        $(button).parent().parent().css("display", "none");
+        $("#hdnIsDeletedWork" + rowId).val(true);
+        removeCountPass++;
+
+    }
+    function ValidateControl(rowCnt) {
+        debugger;
+        for (var i = 0; i < rowCnt; i++) {
+            if ($("#hdnIsDeleted" + i).val() == 'false' || $("#hdnIsDeleted" + i).val() == undefined || $("#hdnIsDeleted" + i).val() == '') {
+
+                $("#objEducationDetails_EducationId_error" + i + "").html("");
+                $("#objEducationDetails_University_error" + i + "").html("");
+                $("#objEducationDetails_PassoutYear_error" + i + "").html("");
+                $("#objEducationDetails_Percentage_error" + i + "").html("");
+
+                var EducationId = $("#objEducationDetails_" + i + "__EducationId").find(":selected").val();
+                var University = $("#objEducationDetails_" + i + "__University").val();
+                var PassoutYear = $("#objEducationDetails_" + i + "__PassoutYear").val();
+                var Percentage = $("#objEducationDetails_" + i + "__Percentage").val();
+
+                if (EducationId == "" || EducationId == undefined) {
+                    $("#objEducationDetails_EducationId_error" + i + "").html("Please Select Education");
+                    return false;
+                }
+                if (University == "" || University == undefined) {
+                    $("#objEducationDetails_University_error" + i + "").html("Please Enter University");
+                    return false;
+                }
+                if (PassoutYear == "" || PassoutYear == undefined) {
+                    $("#objEducationDetails_PassoutYear_error" + i + "").html("Please Enter Passout Year");
+                    return false;
+                }
+                if (Percentage == "" || Percentage == undefined) {
+                    $("#objEducationDetails_Percentage_error" + i + "").html("Please Enter Percentage");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    function ValidateControlWork(rowCnt) {
+        debugger;
+        for (var i = 0; i < rowCnt; i++) {
+            if ($("#hdnIsDeletedWork" + i).val() == 'false' || $("#hdnIsDeletedWork" + i).val() == undefined || $("#hdnIsDeletedWork" + i).val() == '') {
+
+                $("#objWorkExpDetails_Company_error" + i + "").html("");
+                $("#objWorkExpDetails_Designation_error" + i + "").html("");
+                $("#objWorkExpDetails_ExpFromDate_error" + i + "").html("");
+                $("#objWorkExpDetails_ExpToDate_error" + i + "").html("");
+
+                var Company = $("#objWorkExpDetails_" + i + "__Company").val();
+                var Designation = $("#objWorkExpDetails_" + i + "__Designation").val();
+                var ExpFromDate = $("#objWorkExpDetails_" + i + "__ExpFromDate").val();
+                var ExpToDate = $("#objWorkExpDetails_" + i + "__ExpToDate").val();
+
+                if (Company == "" || Company == undefined) {
+                    $("#objWorkExpDetails_Company_error" + i + "").html("Please Select Company");
+                    return false;
+                }
+                if (Designation == "" || Designation == undefined) {
+                    $("#objWorkExpDetails_Designation_error" + i + "").html("Please Enter Designation");
+                    return false;
+                }
+                if (ExpFromDate == "" || ExpFromDate == undefined) {
+                    $("#objWorkExpDetails_ExpFromDate_error" + i + "").html("Please Enter ExpFromDate");
+                    return false;
+                }
+                if (ExpToDate == "" || ExpToDate == undefined) {
+                    $("#objWorkExpDetails_ExpToDate_error" + i + "").html("Please Enter ExpToDate");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    $("#btnFormSubmit").on("click", function (event) {
+        //event.preventDefault();
+        debugger;
+        var flag = false;
+        flag = ValidateControl(ttlCount);
+        flagWork = ValidateControlWork(ttlWorkCount);
+        if (flag && flagPass) {
+            $(this).closest('form').submit();
+        }
+        //else {
+        //    return false;
+        //}
+    });
+</script>
+
